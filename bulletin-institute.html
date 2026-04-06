@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>淨律學佛院 最新消息</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: 400;
+  background: transparent;
+  color: #2a1f0e;
+  padding: 0;
+  font-size: 14px;
+}
+
+.board-wrap {
+  background: #fffdf8;
+  border: 1px solid #d8c89a;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.board-header {
+  background: linear-gradient(135deg, #2a3a10 0%, #3a5018 100%);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.board-header-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.9rem;
+  color: #d8f0a0;
+  letter-spacing: 0.15em;
+}
+.board-header-count {
+  font-size: 0.7rem;
+  color: #a8c870;
+}
+
+.bulletin-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+.bulletin-list::-webkit-scrollbar { width: 4px; }
+.bulletin-list::-webkit-scrollbar-track { background: #f5edd8; }
+.bulletin-list::-webkit-scrollbar-thumb { background: #c8a860; border-radius: 2px; }
+
+.bulletin-item {
+  border-bottom: 1px solid #efe5c8;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.bulletin-item:last-child { border-bottom: none; }
+.bulletin-item:hover { background: #fffbf0; }
+
+.bulletin-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+}
+
+.tag {
+  flex-shrink: 0;
+  font-size: 0.62rem;
+  padding: 1px 5px;
+  border-radius: 2px;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.tag-新   { background: #fff0b0; color: #7a4e00; border: 1px solid #C9A84C; }
+.tag-招生  { background: #e0eaff; color: #1a3a80; border: 1px solid #7a9acc; }
+.tag-課程  { background: #f0e0ff; color: #5a107a; border: 1px solid #b070cc; }
+.tag-法七  { background: #ffeee0; color: #7a3010; border: 1px solid #cc8050; }
+.tag-消息  { background: #e4f7e0; color: #1a5a18; border: 1px solid #70bb60; }
+
+.b-date {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  color: #9a7848;
+  min-width: 80px;
+}
+
+.b-title {
+  flex: 1;
+  font-size: 0.84rem;
+  color: #2a1a08;
+  line-height: 1.4;
+}
+
+.b-arrow {
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  color: #aa8840;
+  transition: transform 0.25s;
+  margin-left: 4px;
+}
+
+.bulletin-detail {
+  display: none;
+  padding: 8px 12px 12px 12px;
+  border-top: 1px dashed #ddd0a8;
+  background: #fffcf5;
+  font-size: 0.8rem;
+  color: #3a2810;
+  line-height: 1.95;
+}
+.bulletin-detail.open { display: block; }
+.bulletin-detail p { margin-bottom: 3px; }
+.bulletin-detail strong { color: #4a2e00; font-weight: 500; }
+.bulletin-detail a { color: #7a5000; text-decoration: underline; }
+
+.detail-img {
+  margin-top: 8px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #ddd0a8;
+  display: block;
+}
+
+.contact-box {
+  background: #f0ece0;
+  border-top: 1px solid #ddd0a8;
+  padding: 7px 12px;
+  font-size: 0.75rem;
+  color: #6b4a10;
+  line-height: 1.8;
+}
+.contact-box strong { color: #4a2e00; }
+
+.board-footer {
+  background: #f5edd8;
+  border-top: 1px solid #ddd0a8;
+  padding: 5px 12px;
+  font-size: 0.7rem;
+  color: #9a7848;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .b-date { display: none; }
+  .b-title { font-size: 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="board-wrap">
+  <div class="board-header">
+    <span class="board-header-title">☸ 淨律學佛院 最新消息</span>
+    <span class="board-header-count">最新 10 則</span>
+  </div>
+  <div class="bulletin-list" id="bulletinList"></div>
+  <div class="contact-box">
+    <strong>聯絡本院：</strong>049-275-5656（上午 07:30～08:00 ／ 下午 12:00～12:30）｜
+    <strong>傳真：</strong>049-2753367
+  </div>
+  <div class="board-footer">點擊標題可展開詳細內容</div>
+</div>
+
+<script>
+// ============================================================
+// 【公告資料區】新增公告：在此陣列「最前面」加一筆即可
+//
+// tag 可用：新／招生／課程／法七／消息
+// img（選填）：Google 雲端硬碟圖片直接網址
+//   格式：https://drive.google.com/uc?export=view&id=你的檔案ID
+// ============================================================
+const bulletins = [
+  {
+    tag: "新",
+    date: "2026-04",
+    title: "一一四學年度下學期【開學佛七】公告",
+    content: `
+      <p><strong>主旨：</strong>開顯智慧，增長福報，蓮品增上，共證菩提</p>
+      <p><strong>時　間：</strong>民國115年4月4日～4月11日（共七日）</p>
+      <p><strong>對　象：</strong>限20歲以上男眾</p>
+      <p><strong>報名截止：</strong>請於3月30日前詳填報名表後寄回本院（通信報名）</p>
+      <p><a href="https://docs.google.com/document/d/1ZGpIYyJpB6U1r6KyvOhAIQo743a1pVG7/edit" target="_blank">▶ 報名表下載（點此前往）</a></p>
+    `
+  },
+  {
+    tag: "課程",
+    date: "2023",
+    title: "僧伽進修班、禪淨雙修班 開辦公告",
+    content: `
+      <p>本院自2023年起新增開辦「僧伽進修班」與「禪淨雙修班」。</p>
+      <p>詳細課程內容及報名資訊，請來電洽詢：<strong>049-275-5656</strong></p>
+      <p>電話時段：上午 07:30～08:00 ｜ 下午 12:00～12:30</p>
+    `
+  },
+  {
+    tag: "招生",
+    date: "2022",
+    title: "第十八屆招生暨第十七屆圓滿畢業公告",
+    content: `
+      <p>2022年第十八屆正式招生，第十七屆圓滿畢業。</p>
+      <p>本院創立於民國76年（1987年），迄今已培育十八屆僧才。</p>
+      <p>有志報考者歡迎來電洽詢：<strong>049-275-5656</strong></p>
+    `
+  },
+  {
+    tag: "消息",
+    date: "2021",
+    title: "禮請淨界法師擔任本院導師",
+    content: `
+      <p>2021年本院正式禮請淨界法師擔任導師。</p>
+      <p>淨界法師長期弘揚淨土教觀，為本院師資奠定深厚根基。</p>
+    `
+  }
+];
+
+const MAX_ITEMS = 10;
+
+function render() {
+  const list = document.getElementById('bulletinList');
+  const items = bulletins.slice(0, MAX_ITEMS);
+  list.innerHTML = items.map((b, i) => `
+    <div class="bulletin-item" onclick="toggle(${i})">
+      <div class="bulletin-row">
+        <span class="tag tag-${b.tag}">${b.tag}</span>
+        <span class="b-date">${b.date}</span>
+        <span class="b-title">${b.title}</span>
+        <span class="b-arrow" id="arrow-${i}">▶</span>
+      </div>
+      <div class="bulletin-detail" id="detail-${i}">
+        ${b.content}
+        ${b.img ? `<img class="detail-img" src="${b.img}" alt="公告圖片" loading="lazy">` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggle(i) {
+  const detail = document.getElementById('detail-' + i);
+  const arrow  = document.getElementById('arrow-' + i);
+  const isOpen = detail.classList.contains('open');
+  document.querySelectorAll('.bulletin-detail.open').forEach(d => d.classList.remove('open'));
+  document.querySelectorAll('.b-arrow').forEach(a => a.style.transform = '');
+  if (!isOpen) {
+    detail.classList.add('open');
+    arrow.style.transform = 'rotate(90deg)';
+  }
+}
+
+render();
+</script>
+</body>
+</html>
