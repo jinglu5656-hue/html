@@ -7,280 +7,81 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: 'Noto Sans TC', sans-serif;
-  font-weight: 400;
-  background: transparent;
-  color: #2a1f0e;
-  padding: 0;
-  font-size: 14px;
-}
-
-.board-wrap {
-  background: #fffdf8;
-  border: 1px solid #d8c89a;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.board-header {
-  background: linear-gradient(135deg, #4a3010 0%, #6a4a18 100%);
-  padding: 8px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.board-header-title {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 0.9rem;
-  color: #f0d88a;
-  letter-spacing: 0.15em;
-}
-.board-header-count {
-  font-size: 0.7rem;
-  color: #c8a860;
-}
-
-.nav-alert {
-  background: #fff8e6;
-  border-bottom: 1px solid #e8d898;
-  padding: 6px 12px;
-  font-size: 0.75rem;
-  color: #6b4a10;
-  line-height: 1.7;
-}
+body { font-family: 'Noto Sans TC', sans-serif; background: transparent; color: #2a1f0e; padding: 0; font-size: 14px; }
+.board-wrap { background: #fffdf8; border: 1px solid #d8c89a; border-radius: 6px; overflow: hidden; }
+.board-header { background: linear-gradient(135deg, #4a3010, #6a4a18); padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; }
+.board-header-title { font-family: 'Noto Serif TC', serif; font-size: 0.9rem; color: #f0d88a; letter-spacing: 0.15em; }
+.board-header-count { font-size: 0.7rem; color: #c8a860; }
+.nav-alert { background: #fff8e6; border-bottom: 1px solid #e8d898; padding: 6px 12px; font-size: 0.75rem; color: #6b4a10; line-height: 1.7; }
 .nav-alert strong { color: #4a2e00; }
-
-.bulletin-list {
-  max-height: 420px;
-  overflow-y: auto;
-}
+.bulletin-list { max-height: 420px; overflow-y: auto; }
 .bulletin-list::-webkit-scrollbar { width: 4px; }
-.bulletin-list::-webkit-scrollbar-track { background: #f5edd8; }
 .bulletin-list::-webkit-scrollbar-thumb { background: #c8a860; border-radius: 2px; }
-
-.bulletin-item {
-  border-bottom: 1px solid #efe5c8;
-  cursor: pointer;
-  transition: background 0.15s;
-}
+.bulletin-item { border-bottom: 1px solid #efe5c8; cursor: pointer; transition: background 0.15s; }
 .bulletin-item:last-child { border-bottom: none; }
 .bulletin-item:hover { background: #fffbf0; }
-
-.bulletin-row {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 12px;
-}
-
-.tag {
-  flex-shrink: 0;
-  font-size: 0.62rem;
-  padding: 1px 5px;
-  border-radius: 2px;
-  letter-spacing: 0.03em;
-  white-space: nowrap;
-  font-weight: 500;
-}
-.tag-新    { background: #fff0b0; color: #7a4e00; border: 1px solid #C9A84C; }
-.tag-法會  { background: #e0eaff; color: #1a3a80; border: 1px solid #7a9acc; }
-.tag-兒童  { background: #e4f7e0; color: #1a5a18; border: 1px solid #70bb60; }
-.tag-報名  { background: #f0e0ff; color: #5a107a; border: 1px solid #b070cc; }
-.tag-行事曆 { background: #efefef; color: #3a3a3a; border: 1px solid #aaaaaa; }
-.tag-演講  { background: #ffeee0; color: #7a3010; border: 1px solid #cc8050; }
-
-.b-date {
-  flex-shrink: 0;
-  font-size: 0.72rem;
-  color: #9a7848;
-  min-width: 80px;
-}
-
-.b-title {
-  flex: 1;
-  font-size: 0.84rem;
-  color: #2a1a08;
-  line-height: 1.4;
-}
-
-.b-arrow {
-  flex-shrink: 0;
-  font-size: 0.65rem;
-  color: #aa8840;
-  transition: transform 0.25s;
-  margin-left: 4px;
-}
-
-.bulletin-detail {
-  display: none;
-  padding: 8px 12px 12px 12px;
-  border-top: 1px dashed #ddd0a8;
-  background: #fffcf5;
-  font-size: 0.8rem;
-  color: #3a2810;
-  line-height: 1.95;
-}
-.bulletin-detail.open { display: block; }
-.bulletin-detail p { margin-bottom: 3px; }
-.bulletin-detail strong { color: #4a2e00; font-weight: 500; }
-.bulletin-detail a { color: #7a5000; text-decoration: underline; }
-
-.detail-img {
-  margin-top: 8px;
-  width: 100%;
-  border-radius: 4px;
-  border: 1px solid #ddd0a8;
-  display: block;
-}
-
-.board-footer {
-  background: #f5edd8;
-  border-top: 1px solid #ddd0a8;
-  padding: 5px 12px;
-  font-size: 0.7rem;
-  color: #9a7848;
-  text-align: center;
-}
-
-@media (max-width: 480px) {
-  .b-date { display: none; }
-  .b-title { font-size: 0.8rem; }
-}
+.bulletin-row { display: flex; align-items: center; gap: 7px; padding: 8px 12px; }
+.tag { flex-shrink: 0; font-size: 0.62rem; padding: 1px 5px; border-radius: 2px; white-space: nowrap; font-weight: 500; }
+.tag-新    { background:#fff0b0; color:#7a4e00; border:1px solid #C9A84C; }
+.tag-法會  { background:#e0eaff; color:#1a3a80; border:1px solid #7a9acc; }
+.tag-兒童  { background:#e4f7e0; color:#1a5a18; border:1px solid #70bb60; }
+.tag-報名  { background:#f0e0ff; color:#5a107a; border:1px solid #b070cc; }
+.tag-行事曆{ background:#efefef; color:#3a3a3a; border:1px solid #aaa; }
+.tag-演講  { background:#ffeee0; color:#7a3010; border:1px solid #cc8050; }
+.b-date { flex-shrink:0; font-size:0.72rem; color:#9a7848; min-width:80px; }
+.b-title { flex:1; font-size:0.84rem; color:#2a1a08; line-height:1.4; }
+.b-arrow { flex-shrink:0; font-size:0.65rem; color:#aa8840; transition:transform 0.25s; margin-left:4px; }
+.bulletin-detail { display:none; padding:8px 12px 12px; border-top:1px dashed #ddd0a8; background:#fffcf5; font-size:0.8rem; color:#3a2810; line-height:1.95; }
+.bulletin-detail.open { display:block; }
+.bulletin-detail p { margin-bottom:3px; }
+.bulletin-detail strong { color:#4a2e00; }
+.bulletin-detail a { color:#7a5000; text-decoration:underline; }
+.detail-img { margin-top:8px; width:100%; border-radius:4px; border:1px solid #ddd0a8; display:block; }
+.board-footer { background:#f5edd8; border-top:1px solid #ddd0a8; padding:5px 12px; font-size:0.7rem; color:#9a7848; text-align:center; }
+.loading { padding:20px; text-align:center; color:#9a7848; font-size:0.85rem; }
+@media(max-width:480px){ .b-date{display:none;} }
 </style>
 </head>
 <body>
-
 <div class="board-wrap">
   <div class="board-header">
     <span class="board-header-title">☸ 重要訊息公告</span>
-    <span class="board-header-count">最新 10 則</span>
+    <span class="board-header-count" id="countLabel">載入中…</span>
   </div>
-  <div class="nav-alert">
-    ⚠ <strong>上山導航：</strong>請先設「初鄉國小」再設「淨律寺」，勿直接設淨律寺（會導至藤湖巷小路，無法通行）
-  </div>
-  <div class="bulletin-list" id="bulletinList"></div>
+  <div class="nav-alert">⚠ <strong>上山導航：</strong>請先設「初鄉國小」再設「淨律寺」，勿直接設淨律寺（會導至藤湖巷小路，無法通行）</div>
+  <div class="bulletin-list" id="bulletinList"><div class="loading">公告載入中…</div></div>
   <div class="board-footer">點擊標題可展開詳細內容</div>
 </div>
-
 <script>
-// ============================================================
-// 【公告資料區】新增公告：在此陣列「最前面」加一筆即可
-//
-// 欄位說明：
-//   tag    : 標籤（新／法會／兒童／報名／行事曆／演講）
-//   date   : 日期（顯示用文字）
-//   title  : 公告標題
-//   content: 詳細內容（可用 HTML 標籤）
-//   img    : 【選填】圖片網址
-//            從 Google 雲端硬碟取得：
-//            1. 右鍵檔案 → 共用 → 「知道連結的人都能查看」
-//            2. 複製連結，取出其中的 ID（/d/「這段」/view）
-//            3. 填入：https://drive.google.com/uc?export=view&id=貼上ID
-// ============================================================
-const bulletins = [
-  {
-    tag: "新",
-    date: "2026-03-21",
-    title: "2026年3月21日（六）齋戒活動公告",
-    content: `
-      <p>3/21 齋戒作息時間請參閱公告圖。</p>
-      <p>要參加齋戒的學長請於 <strong>3/19（週四）</strong> 晚上前完成報名。</p>
-      <p>搭乘遊覽車請向各車負責人報名：<br>
-        板橋車：施主任 ｜ 三重車：許主任 ｜ 台中車：王主任、朱主任</p>
-    `
-  },
-  {
-    tag: "演講",
-    date: "2026-05-02",
-    title: "專題演講：果清大和尚「印祖與陳錫周居士書」",
-    content: `
-      <p><strong>主講人：</strong>埔里正覺精舍 果清大和尚</p>
-      <p><strong>時　間：</strong>5月2日（六）15:00～16:30</p>
-      <p><strong>講　題：</strong>印祖與陳錫周居士書</p>
-    `
-  },
-  {
-    tag: "法會",
-    date: "2026-04-04",
-    title: "2026年清明地藏法會（齋戒＋法會兩日）",
-    content: `
-      <p><strong>4月4日（六）齋戒：</strong>07:30 ～ 19:30</p>
-      <p><strong>4月5日（日）法會：</strong>04:40 ～ 16:00</p>
-      <p>歡迎十方蓮友同霑法益。</p>
-    `
-  },
-  {
-    tag: "兒童",
-    date: "2025-01",
-    title: "115年寒假兒童營編班及報到注意事項公告",
-    content: `
-      <p><strong>報到時間：</strong>115年1月24日（六）08:00～10:00（逾時請先電話告知）</p>
-      <p><strong>男生：</strong>教學大樓一樓停車場 ｜ <strong>女生及小幼班：</strong>女眾學苑</p>
-      <p><strong>聯絡電話：</strong>男生 049-2754356 ｜ 女生 049-2750861</p>
-      <p><strong>賦歸時間：</strong>115年1月28日（三）13:00～14:30</p>
-      <p><a href="https://drive.google.com/file/d/15ljjRHLYbpDeDlyvv096Ezw_Ugd6GekJ/view" target="_blank">▶ 兒童營編班名單（點此查看）</a></p>
-    `
-  },
-  {
-    tag: "行事曆",
-    date: "2026",
-    title: "2026年（115年）全年行事曆",
-    content: `
-      <p>歡迎蓮友上山同霑法益，詳細活動時間請參閱下方行事曆圖。</p>
-      <p>來電洽詢：<strong>049-2754356</strong></p>
-    `,
-    img: "https://drive.google.com/uc?export=view&id=1_SXOw1qRAjg9SGdW26VL5Y81t3IMMgxs"
-  },
-  {
-    tag: "報名",
-    date: "2026-02",
-    title: "2026年精進佛三活動（網路報名）",
-    content: `
-      <p><strong>報名截止：</strong>115年02月13日（五）</p>
-      <p><a href="https://forms.gle/Ss4aNX4Xtan9YvBNA" target="_blank">▶ 網路報名表（點此前往）</a></p>
-      <p style="margin-top:5px;"><strong>護持道場（郵政劃撥）：</strong><br>
-        帳號：02884484 ｜ 戶名：淨律寺<br>
-        局號：0401235 ｜ 帳號：0063681 ｜ 戶名：淨律寺白翔光</p>
-    `
-  }
-];
+fetch('https://jinglu5656-hue.github.io/html/announcements.json?v='+Date.now())
+  .then(r=>r.json())
+  .then(all=>{
+    const items=all.filter(b=>b.category==='main').slice(0,10);
+    document.getElementById('countLabel').textContent='最新 '+items.length+' 則';
+    document.getElementById('bulletinList').innerHTML=items.map((b,i)=>`
+      <div class="bulletin-item" onclick="toggle(${i})">
+        <div class="bulletin-row">
+          <span class="tag tag-${b.tag}">${b.tag}</span>
+          <span class="b-date">${b.date}</span>
+          <span class="b-title">${b.title}</span>
+          <span class="b-arrow" id="arrow-${i}">▶</span>
+        </div>
+        <div class="bulletin-detail" id="detail-${i}">
+          ${b.content}
+          ${b.img?`<img class="detail-img" src="${b.img}" alt="公告圖片" loading="lazy">`:''}
+        </div>
+      </div>`).join('');
+  })
+  .catch(()=>{document.getElementById('bulletinList').innerHTML='<div class="loading">公告暫時無法載入，請稍後再試。</div>';});
 
-const MAX_ITEMS = 10;
-
-function render() {
-  const list = document.getElementById('bulletinList');
-  const items = bulletins.slice(0, MAX_ITEMS);
-  list.innerHTML = items.map((b, i) => `
-    <div class="bulletin-item" onclick="toggle(${i})">
-      <div class="bulletin-row">
-        <span class="tag tag-${b.tag}">${b.tag}</span>
-        <span class="b-date">${b.date}</span>
-        <span class="b-title">${b.title}</span>
-        <span class="b-arrow" id="arrow-${i}">▶</span>
-      </div>
-      <div class="bulletin-detail" id="detail-${i}">
-        ${b.content}
-        ${b.img ? `<img class="detail-img" src="${b.img}" alt="公告圖片" loading="lazy">` : ''}
-      </div>
-    </div>
-  `).join('');
+function toggle(i){
+  const d=document.getElementById('detail-'+i);
+  const a=document.getElementById('arrow-'+i);
+  const open=d.classList.contains('open');
+  document.querySelectorAll('.bulletin-detail.open').forEach(x=>x.classList.remove('open'));
+  document.querySelectorAll('.b-arrow').forEach(x=>x.style.transform='');
+  if(!open){d.classList.add('open');a.style.transform='rotate(90deg)';}
 }
-
-function toggle(i) {
-  const detail = document.getElementById('detail-' + i);
-  const arrow  = document.getElementById('arrow-' + i);
-  const isOpen = detail.classList.contains('open');
-  document.querySelectorAll('.bulletin-detail.open').forEach(d => d.classList.remove('open'));
-  document.querySelectorAll('.b-arrow').forEach(a => a.style.transform = '');
-  if (!isOpen) {
-    detail.classList.add('open');
-    arrow.style.transform = 'rotate(90deg)';
-  }
-}
-
-render();
 </script>
 </body>
 </html>
