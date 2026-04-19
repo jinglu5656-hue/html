@@ -1,10 +1,19 @@
 [
   {
-    "tag": "新",
+    "tag": "兒童",
     "date": "2026-04-10",
     "title": "115年暑假兒童營（7月1～5日)",
     "content": "<p>兒童營報名表：https://forms.gle/W2rRTbM4JPiviv798。</p>助教義工報名表：https://forms.gle/XKGW1iRqMB83UR1S7。</p>",
     "img": "https://lh3.googleusercontent.com/u/0/d/1qW5E5MrrAwvhvSAmb7BCqsXt9UFzGSDF",
+    "category": "main"
+  },
+   {
+    "tag": "演講",
+    "date": "2026-05-02",
+    "title": "專題演講：果清大和尚「印祖與陳錫周居士書」",
+    "content": "<p><strong>主講人：</strong>埔里正覺精舍 果清大和尚</p><p><strong>時　間：</strong>5月2日（六）15:00～16:30</p><p><strong>講　題：</strong>印祖與陳錫周居士書</p>",
+    "img": "https://lh3.googleusercontent.com/u/0/d/1FZTUYKgx_GlJix4W_UxcDjFGmNJiKQHZ",
+    "img": "https://lh3.googleusercontent.com/u/0/d/1ukLtNViL2uSOzHbrM1g1l1H_sMi6OtV6",
     "category": "main"
   },
   {
@@ -30,14 +39,6 @@
     "title": "2026年3月21日（六）齋戒活動公告",
     "content": "<p>3/21 齋戒作息時間請參閱公告圖。</p><p>要參加齋戒的學長請於 <strong>3/19（週四）</strong> 晚上前完成報名。</p><p>搭乘遊覽車請向各車負責人報名：<br>板橋車：施主任 ｜ 三重車：許主任 ｜ 台中車：王主任、朱主任</p>",
     "img": "",
-    "category": "main"
-  },
-  {
-    "tag": "演講",
-    "date": "2026-05-02",
-    "title": "專題演講：果清大和尚「印祖與陳錫周居士書」",
-    "content": "<p><strong>主講人：</strong>埔里正覺精舍 果清大和尚</p><p><strong>時　間：</strong>5月2日（六）15:00～16:30</p><p><strong>講　題：</strong>印祖與陳錫周居士書</p>",
-    "img": "https://lh3.googleusercontent.com/u/0/d/1FZTUYKgx_GlJix4W_UxcDjFGmNJiKQHZ",
     "category": "main"
   },
   {
