@@ -14,9 +14,7 @@ body { font-family: 'Noto Sans TC', sans-serif; background: transparent; color: 
 .board-header-count { font-size: 0.7rem; color: #c8a860; }
 .nav-alert { background: #fff8e6; border-bottom: 1px solid #e8d898; padding: 6px 12px; font-size: 0.75rem; color: #6b4a10; line-height: 1.7; }
 .nav-alert strong { color: #4a2e00; }
-.bulletin-list { max-height: 420px; overflow-y: auto; }
-.bulletin-list::-webkit-scrollbar { width: 4px; }
-.bulletin-list::-webkit-scrollbar-thumb { background: #c8a860; border-radius: 2px; }
+.bulletin-list { overflow: hidden; }
 .bulletin-item { border-bottom: 1px solid #efe5c8; cursor: pointer; transition: background 0.15s; }
 .bulletin-item:last-child { border-bottom: none; }
 .bulletin-item:hover { background: #fffbf0; }
@@ -28,15 +26,31 @@ body { font-family: 'Noto Sans TC', sans-serif; background: transparent; color: 
 .tag-報名  { background:#f0e0ff; color:#5a107a; border:1px solid #b070cc; }
 .tag-行事曆{ background:#efefef; color:#3a3a3a; border:1px solid #aaa; }
 .tag-演講  { background:#ffeee0; color:#7a3010; border:1px solid #cc8050; }
-.b-date { flex-shrink:0; font-size:0.72rem; color:#9a7848; min-width:80px; }
+.tag-課程  { background:#e0f0ff; color:#1a4a7a; border:1px solid #7aaacc; }
+.b-date { flex-shrink:0; font-size:0.72rem; color:#9a7848; min-width:90px; }
 .b-title { flex:1; font-size:0.84rem; color:#2a1a08; line-height:1.4; }
 .b-arrow { flex-shrink:0; font-size:0.65rem; color:#aa8840; transition:transform 0.25s; margin-left:4px; }
 .bulletin-detail { display:none; padding:8px 12px 12px; border-top:1px dashed #ddd0a8; background:#fffcf5; font-size:0.8rem; color:#3a2810; line-height:1.95; }
 .bulletin-detail.open { display:block; }
-.bulletin-detail p { margin-bottom:3px; }
+.bulletin-detail p { margin-bottom:5px; }
 .bulletin-detail strong { color:#4a2e00; }
 .bulletin-detail a { color:#7a5000; text-decoration:underline; }
 .detail-img { margin-top:8px; width:100%; border-radius:4px; border:1px solid #ddd0a8; display:block; }
+
+/* 分頁列 */
+.pagination { background:#f5edd8; border-top:1px solid #ddd0a8; padding:6px 12px; display:flex; align-items:center; justify-content:space-between; gap:6px; }
+.page-info { font-size:0.72rem; color:#9a7848; white-space:nowrap; }
+.page-btns { display:flex; gap:4px; align-items:center; }
+.page-btn {
+  font-size:0.72rem; padding:3px 8px; border:1px solid #d8c89a;
+  background:#fffdf8; color:#6a4a18; cursor:pointer; border-radius:3px;
+  transition: background 0.15s, color 0.15s;
+  font-family: 'Noto Sans TC', sans-serif;
+}
+.page-btn:hover { background:#e8d8a8; }
+.page-btn.active { background:#6a4a18; color:#f0d88a; border-color:#6a4a18; font-weight:500; }
+.page-btn:disabled { opacity:0.35; cursor:default; }
+
 .board-footer { background:#f5edd8; border-top:1px solid #ddd0a8; padding:5px 12px; font-size:0.7rem; color:#9a7848; text-align:center; }
 .loading { padding:20px; text-align:center; color:#9a7848; font-size:0.85rem; }
 @media(max-width:480px){ .b-date{display:none;} }
@@ -50,37 +64,75 @@ body { font-family: 'Noto Sans TC', sans-serif; background: transparent; color: 
   </div>
   <div class="nav-alert">⚠ <strong>上山導航：</strong>請先設「初鄉國小」再設「淨律寺」，勿直接設淨律寺（會導至藤湖巷小路，無法通行）</div>
   <div class="bulletin-list" id="bulletinList"><div class="loading">公告載入中…</div></div>
+  <div class="pagination" id="pagination" style="display:none">
+    <span class="page-info" id="pageInfo"></span>
+    <div class="page-btns" id="pageBtns"></div>
+  </div>
   <div class="board-footer">點擊標題可展開詳細內容</div>
 </div>
-<script>
-fetch('https://jinglu5656-hue.github.io/html/announcements.json?v='+Date.now())
-  .then(r=>r.json())
-  .then(all=>{
-    const items=all.filter(b=>b.category==='main').slice(0,10);
-    document.getElementById('countLabel').textContent='最新 '+items.length+' 則';
-    document.getElementById('bulletinList').innerHTML=items.map((b,i)=>`
-      <div class="bulletin-item" onclick="toggle(${i})">
-        <div class="bulletin-row">
-          <span class="tag tag-${b.tag}">${b.tag}</span>
-          <span class="b-date">${b.date}</span>
-          <span class="b-title">${b.title}</span>
-          <span class="b-arrow" id="arrow-${i}">▶</span>
-        </div>
-        <div class="bulletin-detail" id="detail-${i}">
-          ${b.content}
-          ${b.img?`<img class="detail-img" src="${b.img}" alt="公告圖片" loading="lazy">`:''}
-        </div>
-      </div>`).join('');
-  })
-  .catch(()=>{document.getElementById('bulletinList').innerHTML='<div class="loading">公告暫時無法載入，請稍後再試。</div>';});
 
-function toggle(i){
-  const d=document.getElementById('detail-'+i);
-  const a=document.getElementById('arrow-'+i);
-  const open=d.classList.contains('open');
-  document.querySelectorAll('.bulletin-detail.open').forEach(x=>x.classList.remove('open'));
-  document.querySelectorAll('.b-arrow').forEach(x=>x.style.transform='');
-  if(!open){d.classList.add('open');a.style.transform='rotate(90deg)';}
+<script>
+const PER_PAGE = 10;
+const JSON_URL = 'https://jinglu5656-hue.github.io/html/announcements.json';
+let allItems = [];
+let currentPage = 1;
+let openIndex = -1;
+
+fetch(JSON_URL + '?v=' + Date.now())
+  .then(r => r.json())
+  .then(all => {
+    allItems = all.filter(b => b.category === 'main');
+    document.getElementById('countLabel').textContent = '共 ' + allItems.length + ' 則';
+    renderPage(1);
+  })
+  .catch(() => {
+    document.getElementById('bulletinList').innerHTML = '<div class="loading">公告暫時無法載入，請稍後再試。</div>';
+  });
+
+function renderPage(page) {
+  currentPage = page;
+  openIndex = -1;
+  const total = allItems.length;
+  const totalPages = Math.ceil(total / PER_PAGE);
+  const start = (page - 1) * PER_PAGE;
+  const items = allItems.slice(start, start + PER_PAGE);
+
+  document.getElementById('bulletinList').innerHTML = items.map((b, i) => `
+    <div class="bulletin-item" onclick="toggle(${i})">
+      <div class="bulletin-row">
+        <span class="tag tag-${b.tag}">${b.tag}</span>
+        <span class="b-date">${b.date}</span>
+        <span class="b-title">${b.title}</span>
+        <span class="b-arrow" id="arrow-${i}">▶</span>
+      </div>
+      <div class="bulletin-detail" id="detail-${i}">
+        ${b.content}
+        ${b.img ? `<img class="detail-img" src="${b.img}" alt="公告圖片" loading="lazy">` : ''}
+      </div>
+    </div>`).join('');
+
+  // 分頁資訊
+  document.getElementById('pageInfo').textContent = `第 ${page} / ${totalPages} 頁`;
+
+  // 分頁按鈕
+  const btns = document.getElementById('pageBtns');
+  let html = `<button class="page-btn" onclick="renderPage(${page-1})" ${page===1?'disabled':''}>‹ 上頁</button>`;
+  for (let p = 1; p <= totalPages; p++) {
+    html += `<button class="page-btn ${p===page?'active':''}" onclick="renderPage(${p})">${p}</button>`;
+  }
+  html += `<button class="page-btn" onclick="renderPage(${page+1})" ${page===totalPages?'disabled':''}>下頁 ›</button>`;
+  btns.innerHTML = html;
+
+  document.getElementById('pagination').style.display = totalPages > 1 ? 'flex' : 'none';
+}
+
+function toggle(i) {
+  const d = document.getElementById('detail-' + i);
+  const a = document.getElementById('arrow-' + i);
+  const isOpen = d.classList.contains('open');
+  document.querySelectorAll('.bulletin-detail.open').forEach(x => x.classList.remove('open'));
+  document.querySelectorAll('.b-arrow').forEach(x => x.style.transform = '');
+  if (!isOpen) { d.classList.add('open'); a.style.transform = 'rotate(90deg)'; }
 }
 </script>
 </body>
